@@ -6,7 +6,7 @@ The resulting JSON will contain the encrypted title ID from a game which is the 
 
 ## Where to obtain the list?
 
-List is published in the github pages for this repository and access it can be downloaded at [https://fmartingr.github.io/switch-games-json/switch_games.json](https://fmartingr.github.io/switch-games/switch_games.json).
+List is published in the github pages for this repository and access it can be downloaded at [https://fmartingr.github.io/switch-games-json/switch_games.json](https://fmartingr.github.io/switch-games-json/switch_games.json).
 
 List is updated daily.
 
