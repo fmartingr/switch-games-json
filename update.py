@@ -85,5 +85,5 @@ if __name__ == "__main__":
             encrypted_game_id=encrypt_title_id(game[0])
         ))
 
-    with open("switch_games.json", "w") as handler:
+    with open("public/switch_games.json", "w") as handler:
         json.dump(games, handler, cls=DataclassJSONEncoder)
