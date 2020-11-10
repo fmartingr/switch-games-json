@@ -1,4 +1,5 @@
 from dataclasses import dataclass, asdict, is_dataclass
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -87,3 +88,9 @@ if __name__ == "__main__":
 
     with open("public/switch_games.json", "w") as handler:
         json.dump(games, handler, cls=DataclassJSONEncoder)
+
+    with open("index.html.tmpl", "rb") as handler:
+        index_html = handler.read()
+
+        with open("public/index.html", "w") as handler_writter:
+            handler_writter.write(index_html.decode("utf-8").format(last_update=datetime.utcnow()))
