@@ -1,4 +1,4 @@
-from dataclasses import dataclass, asdict, is_dataclass
+from dataclasses import dataclass, asdict, is_dataclass, field
 from datetime import datetime
 import hashlib
 import json
@@ -11,15 +11,15 @@ from Crypto.Cipher import AES
 
 @dataclass
 class Game:
-    title_id: str
-    type: str
-    description: str
-    min_os: str
-    regions: list
-    distribution: list
-    versions: list
-    cartdridge_description: str
     encrypted_game_id: str
+    description: str
+    title_id: str = None
+    type: str = None
+    min_os: str = None
+    regions: list = field(default_factory=list)
+    distribution: list = field(default_factory=list)
+    versions: list = field(default_factory=list)
+    cartdridge_description: str = field(default_factory=list)
 
 
 class DataclassJSONEncoder(json.JSONEncoder):
@@ -31,6 +31,7 @@ class DataclassJSONEncoder(json.JSONEncoder):
 
 # URL to get the list of games from
 switchbrew_url = "https://switchbrew.org/w/index.php?title=Title_list/Games"
+manual_games_url = "https://raw.githubusercontent.com/RenanGreca/Switch-Screenshots/master/game_ids.json"
 
 # md5 checksum of the keys.prod file
 keys_prod_md5sum = "f97a6841063b72f6a5d7f7e0df5bb886"
@@ -46,8 +47,8 @@ def get_key():
     return bytes.fromhex(key)
 
 
-def download_url():
-    with urllib.request.urlopen(switchbrew_url) as f:
+def download_url(url):
+    with urllib.request.urlopen(url) as f:
         result = f.read().decode("utf-8")
     return result
 
@@ -65,8 +66,9 @@ def encrypt_title_id(title_id):
     return encrypted.hex().upper()
 
 
-def get_games():
-    html = download_url()
+def get_games_switchbrew():
+    return []
+    html = download_url(switchbrew_url)
     tr_regex = re.compile(
         r"<tr>(\n<td>.*</td>\n<td>.*</td>\n<td>.*</td>\n<td>.*</td>\n<td>.*</td>\n<td>.*</td>\n<td>.*</td>\n<td>.*\n</td>)",
         re.MULTILINE,
@@ -76,10 +78,23 @@ def get_games():
         yield [clear_html_tags(cell).strip() for cell in td_regex.findall(match)]
 
 
+def get_games_manual():
+    contents = download_url(manual_games_url)
+    return json.loads(contents)
+
+
+def find_game_by_id(games, id) -> int:
+    i = 0
+    for game in games:
+        if game.title_id == id:
+            return i
+        i += 1
+
+
 if __name__ == "__main__":
     cipher = AES.new(get_key(), AES.MODE_ECB)
     games = []
-    for game in get_games():
+    for game in get_games_switchbrew():
         games.append(
             Game(
                 title_id=game[0],
@@ -94,8 +109,20 @@ if __name__ == "__main__":
             )
         )
 
+    for encrypted_game_id, name in get_games_manual().items():
+        game_index = find_game_by_id(games, encrypted_game_id)
+        game = Game(encrypted_game_id=encrypted_game_id, description=name)
+        if game_index:
+            games[game_index] = game
+        else:
+            games.append(game)
+
     with open("public/switch_games.json", "w") as handler:
         json.dump(games, handler, cls=DataclassJSONEncoder)
+
+    with open("public/switch_id_names.json", "w") as handler:
+        games_id_and_names = {game.encrypted_game_id: game.description for game in games}
+        json.dump(games_id_and_names, handler)
 
     with open("index.html.tmpl", "rb") as handler:
         index_html = handler.read()
