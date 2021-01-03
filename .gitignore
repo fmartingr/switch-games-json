@@ -1,4 +1,5 @@
 keys.prod
 .venv
 public/switch_games.json
+public/switch_id_names.json
 public/index.html
