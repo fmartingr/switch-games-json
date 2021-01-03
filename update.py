@@ -121,7 +121,13 @@ if __name__ == "__main__":
         json.dump(games, handler, cls=DataclassJSONEncoder)
 
     with open("public/switch_id_names.json", "w") as handler:
-        games_id_and_names = {game.encrypted_game_id: game.description for game in games}
+        games_id_and_names = [
+            {
+                "encrypted_game_id": game.encrypted_game_id,
+                "title_normalized": game.description,
+            }
+            for game in games
+        ]
         json.dump(games_id_and_names, handler)
 
     with open("index.html.tmpl", "rb") as handler:

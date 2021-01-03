@@ -15,6 +15,7 @@ List is updated daily automatically via Github actions.
 ## Schema
 
 ``` json
+# switch_games.json
 {
     "title_id": "0100000000010000",
     "type": "Application / Game",
@@ -39,6 +40,14 @@ List is updated daily automatically via Github actions.
         "0x40000"
     ],
     "cartdridge_description": "",
+    "encrypted_game_id": "8AEDFF741E2D23FBED39474178692DAF"
+}
+```
+
+``` json
+# switch_id_names.json
+{
+    "title_normalized": "Super Mario Odyssey",
     "encrypted_game_id": "8AEDFF741E2D23FBED39474178692DAF"
 }
 ```
