@@ -10,7 +10,7 @@ There are two resulting JSON files:
 
 List is published in the github pages for this repository and access it can be downloaded at [https://fmartingr.github.io/switch-games-json/](https://fmartingr.github.io/switch-games-json/), just point to the file that more suites your use case.
 
-List is updated daily automatically via Github actions.
+List is updated weekly via Github actions.
 
 ## Schema
 
