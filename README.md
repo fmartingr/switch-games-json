@@ -1,5 +1,9 @@
 # Switch Games JSON
 
+:warning: **NOTICE:** This repository has been archived an read-only because now there's a better method to get the Switch game screenshots with folder names. [Please refer to the Nintendo documentation](https://en-americas-support.nintendo.com/app/answers/detail/a_id/53664/~/how-to-transfer-screenshots-and-video-captures-to-a-computer-via-a-usb-cable) to learn more. The site for this repository will remain online but it wont be updated anymore.
+
+---
+
 This repository contains the code to parse and build a Nintendo Switch game list in JSON using the [Game List from switchbrew](https://switchbrew.org/w/index.php?title=Title_list/Games") and the Community Provided list from [RenanGreca/Switch-Screenshots repository](https://github.com/RenanGreca/Switch-Screenshots).
 
 There are two resulting JSON files:
